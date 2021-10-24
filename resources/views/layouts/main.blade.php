@@ -9,6 +9,8 @@
     <link rel="stylesheet" href="{{asset('css/app.css')}}" />
 </head>
 <body>
+    <nav>Nav goes here</nav>
+    @yield('content')
 
 </body>
 </html>

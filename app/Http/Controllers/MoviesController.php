@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
+use Carbon\Carbon;
 
 class MoviesController extends Controller
 {
@@ -18,9 +19,26 @@ class MoviesController extends Controller
             ->get('https://api.themoviedb.org/3/movie/popular')
             ->json()['results'];
 
-        dump($popularMovies);
 
-        return view('movies.index');
+        $genereArray =    Http::withToken(config('services.tmdb.token'))
+        ->get('https://api.themoviedb.org/3/genre/movie/list')
+        ->json()['genres'];
+
+
+
+        $genres = collect($genereArray)->mapWithKeys(function ($genre) {
+            return [$genre['id'] => $genre['name']];
+        });
+
+        $nowPlayingMovies = Http::withToken(config('services.tmdb.token'))
+            ->get('https://api.themoviedb.org/3/movie/now_playing')
+            ->json()['results'];
+
+        return view('movies.index', [
+            'popularMovies' => $popularMovies,
+            'genres' => $genres,
+            'nowPlayingMovies' => $nowPlayingMovies
+        ]);
     }
 
     /**
@@ -50,10 +68,34 @@ class MoviesController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id = 1)
+    public function show($id)
     {
-        return view('movies.show');
+        $movie = Http::withToken(config('services.tmdb.token'))
+            ->get('https://api.themoviedb.org/3/movie/' . $id . '?append_to_response=credits,videos,images')
+            ->json();
+
+        // dump($movie);
+
+        $credits = $movie['credits']['cast'];
+
+        $crews = collect($credits)->take(5)->map(function ($cast) {
+            return collect($cast)->merge(['character' => $cast['character']]);
+        });
+
+        // dump($crews);
+
+        $videos = collect($movie['videos']['results'])->take(2);
+
+        $images = collect($movie['images']['backdrops'])->take(9);
+
+        return view('movies.show', [
+            'movie' => $movie,
+            'crews' => $crews,
+            'videos' => $videos,
+            'images' => $images
+        ]);
     }
+
 
     /**
      * Show the form for editing the specified resource.

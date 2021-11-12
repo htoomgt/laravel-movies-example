@@ -18,15 +18,9 @@
         <div class="text-gray-400 text-sm">
 
 
-            @foreach ($movie['genre_ids'] as $genreId)
-                {{$genres->get($genreId)}}
-
-                @if(!$loop->last )
-                    ,
-                @endif
+            @foreach ($movie['genre_ids'] as $genreId){{$genres->get($genreId)}} @if(!$loop->last ), @endif @endforeach
 
 
-            @endforeach
 
         </div>
     </div>

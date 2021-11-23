@@ -8,6 +8,7 @@
     <title>Movie App</title>
 
     <link rel="stylesheet" href="{{ asset('css/app.css') }}" />
+    <livewire:styles />
 </head>
 
 <body class="font-sans bg-gray-900 text-white">
@@ -36,19 +37,8 @@
             </ul>
 
             <div class="flex flex-col md:flex-row items-center">
-                <div class="relative mt-4 md:mt-4 ">
-                    <input type="text"
-                        class="bg-gray-800 rounded-full text-sm w-64 pl-6 pr-1 py-1 focus:outline-none focus:shadow-outline"
-                        placeholder="search">
-                    <div class="absolute top-0">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="mt-2 ml-1 w-4 fill-current text-gray-500"
-                            fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                        </svg>
-                    </div>
+                <livewire:search-dropdown>
 
-                </div>
                 <div class="md:ml-4 mt-3 md:mt-0">
                     <a href="#">
                         <img src="/img/avatar.jpg" alt="avatar" class="rounded-full w-8 h-8">
@@ -59,7 +49,9 @@
         </div>
     </nav>
     @yield('content')
+    <livewire:scripts />
 
 </body>
 
 </html>
+

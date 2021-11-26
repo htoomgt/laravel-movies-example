@@ -5,6 +5,11 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use Carbon\Carbon;
+use App\ViewModels\MoviesViewModel;
+use App\ViewModels\MovieViewModel;
+
+
+
 
 class MoviesController extends Controller
 {
@@ -20,7 +25,7 @@ class MoviesController extends Controller
             ->json()['results'];
 
 
-        $genereArray =    Http::withToken(config('services.tmdb.token'))
+        $genres =    Http::withToken(config('services.tmdb.token'))
         ->get('https://api.themoviedb.org/3/genre/movie/list')
         ->json()['genres'];
 
@@ -28,9 +33,7 @@ class MoviesController extends Controller
 
 
 
-        $genres = collect($genereArray)->mapWithKeys(function ($genre) {
-            return [$genre['id'] => $genre['name']];
-        });
+
 
         // dd($genres);
 
@@ -38,11 +41,15 @@ class MoviesController extends Controller
             ->get('https://api.themoviedb.org/3/movie/now_playing')
             ->json()['results'];
 
-        return view('movies.index', [
-            'popularMovies' => $popularMovies,
-            'genres' => $genres,
-            'nowPlayingMovies' => $nowPlayingMovies
-        ]);
+
+
+        $viewModel = new MoviesViewModel(
+            $popularMovies,
+            $nowPlayingMovies,
+            $genres
+        );
+
+        return view('movies.index', $viewModel);
     }
 
     /**
@@ -80,24 +87,22 @@ class MoviesController extends Controller
 
         // dump($movie);
 
-        $credits = $movie['credits']['cast'];
 
-        $crews = collect($credits)->take(5)->map(function ($cast) {
-            return collect($cast)->merge(['character' => $cast['character']]);
-        });
 
-        // dump($crews);
+        $viewModel = new MovieViewModel(
+            $movie
 
-        $videos = collect($movie['videos']['results'])->take(2);
 
-        $images = collect($movie['images']['backdrops'])->take(9);
+        );
 
-        return view('movies.show', [
-            'movie' => $movie,
-            'crews' => $crews,
-            'videos' => $videos,
-            'images' => $images
-        ]);
+        // return view('movies.show', [
+        //     'movie' => $movie,
+        //     'crews' => $crews,
+        //     'videos' => $videos,
+        //     'images' => $images
+        // ]);
+
+        return view('movies.show', $viewModel);
     }
 
 

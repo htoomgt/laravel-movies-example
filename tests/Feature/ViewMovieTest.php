@@ -28,7 +28,7 @@ class ViewMovieTest extends TestCase
         $response->assertSuccessful();
         $response->assertSee('popular movies');
         $response->assertSee('Fake Movie');
-        $response->assertSee('Adventure ,  Drama ,  Mystery ,  Science Fiction ,  Thriller');
+        $response->assertSee('Adventure, Drama, Mystery, Science Fiction, Thriller');
         $response->assertSee('Now Playing');
         $response->assertSee('Now Playing Fake Movie');
 

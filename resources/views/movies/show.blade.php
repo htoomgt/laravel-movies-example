@@ -104,11 +104,11 @@
 
 
                     <div class="mt-8">
-                        <a href="#">
+                        <a href="{{route('actors.show', $crew['id'])}}">
                             <img src="{{'https://image.tmdb.org/t/p/w500/'.$crew['profile_path']}}" alt="{{$crew['name']}}" class="hover:opacity-75 transition ease-in-out duration-150" />
                         </a>
                         <div class="mt-2">
-                            <a href="#" class="text-lg mt-2 hover:text-gray-300">{{$crew['name']}}</a>
+                            <a href="{{route('actors.show', $crew['id'])}}" class="text-lg mt-2 hover:text-gray-300">{{$crew['name']}}</a>
                             <div class="text-sm text-gray-400">{{$crew['character']}}</div>
                         </div>
                     </div>

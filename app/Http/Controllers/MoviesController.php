@@ -29,13 +29,7 @@ class MoviesController extends Controller
         ->get('https://api.themoviedb.org/3/genre/movie/list')
         ->json()['genres'];
 
-        // dd($popularMovies);
 
-
-
-
-
-        // dd($genres);
 
         $nowPlayingMovies = Http::withToken(config('services.tmdb.token'))
             ->get('https://api.themoviedb.org/3/movie/now_playing')

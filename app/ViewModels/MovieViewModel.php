@@ -8,9 +8,6 @@ use Carbon\Carbon;
 class MovieViewModel extends ViewModel
 {
     public $movie;
-    public $crews;
-    public $videos;
-    public $images;
 
     public function __construct($movie)
     {
